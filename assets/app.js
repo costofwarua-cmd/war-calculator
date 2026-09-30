@@ -505,7 +505,7 @@
       return items + items;                                        // doubled for a seamless loop
     })();
     if ($("#hero-range")) $("#hero-range").textContent = t("hero.range", { lo: fmtMoney(c.lo, "$", 0), hi: fmtMoney(c.hi, "$", 0) });
-    $("#hero-today").innerHTML = ` · <strong>+${esc(fmtMoney(c.today))}</strong> ` + esc(t("hero.today", { v: "" }).trim());
+    $("#hero-today").innerHTML = `<strong>+${esc(fmtMoney(c.today))}</strong> ` + esc(t("hero.today", { v: "" }).trim());
     if ($("#hero-live")) $("#hero-live").textContent = "≈ " + t("hero.live");
     if (state.ktRefresh && state.introDone) state.ktRefresh();
     const live = heroLive(), el = $("#hero-total");
@@ -743,11 +743,18 @@
     $("#wall-cost").textContent = cost ? t("wall.cost", { v: fmtMoney(n * cost.mid) }) : "";
     const canvas = $("#wall");
     canvas.setAttribute("aria-label", `${t("cat." + k)}: ${fmtInt(n)}`);
-    if (state.wallCancel) state.wallCancel();
-    if (animate || !state.wallDrawn) { state.wallCancel = FX.wall(canvas, k, Math.ceil(n / per), "#e66767"); state.wallDrawn = true; }
+    if (state.wall) state.wall.cancel();
+    if (animate || !state.wallDrawn) {
+      $("#wall-hint").textContent = "";
+      state.wall = FX.wall(canvas, k, Math.ceil(n / per), "#e66767", {
+        onMorph: big => { $("#wall-hint").textContent = t(big ? "wall.hint.big" : "wall.hint.grid"); },
+      });
+      state.wallDrawn = true;
+    }
   }
   function initWall() {
     if (!$("#wall")) return;
+    $("#wall").addEventListener("click", () => state.wall && state.wall.toggle());
     $("#wall-chips").addEventListener("click", e => {
       const b = e.target.closest("button[data-k]"); if (!b) return;
       state.wallKind = b.dataset.k; renderWall(true);
@@ -993,44 +1000,114 @@
     state.shareBest = best || null;
     state.shareWhat = best ? `${fmtInt(best.q)} × ${t("item." + best.id)}` : t("item.tourniquet");
     state.shareAmount = SYM[cur] + fmtInt(amount);
+    state.shareUah = uah;
+    scheduleShareCard();
   }
 
-  // 1080×1350 PNG for Instagram/Telegram.
-  async function makeShareImage() {
-    const W = 1080, H = 1350, c = document.createElement("canvas");
-    c.width = W; c.height = H;
-    const g = c.getContext("2d");
-    const img = new Image();
-    img.src = "assets/media/sunset.webp";
-    await img.decode().catch(() => {});
+  /* ---------- share card: design depends on the amount (tier) and on what it buys ---------- */
+  const TIERS = [                                   // [min UAH, main colour, deep background]
+    [0, "#6fa8ff", "#0a1426"], [1000, "#3d8bff", "#0b1a33"], [10000, "#ffd500", "#211a05"],
+    [50000, "#ff9d2e", "#26140a"], [250000, "#fff1a8", "#1d1606"],
+  ];
+  // Photo backdrops for items that have a fitting licensed photo; others get a graphic composition.
+  const ITEM_PHOTO = { fpv: "assets/media/sunset.webp", mavic: "assets/media/launch.webp", trench_ew: "assets/media/sting.webp" };
+  const tierOf = uah => TIERS.reduce((best, tr, i) => (uah >= tr[0] ? i : best), 0);
+  const imgCache = new Map();
+  const loadImg = src => {
+    if (!imgCache.has(src)) imgCache.set(src, new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }));
+    return imgCache.get(src);
+  };
+
+  async function drawShareCard(cv) {
+    const W = 1080, H = 1350, g = cv.getContext("2d");
+    const uah = state.shareUah || 0, ti = tierOf(uah), [, col, deep] = TIERS[ti];
+    const best = state.shareBest, item = best ? best.id : "tourniquet";
     try { await Promise.all([document.fonts.load("800 90px Unbounded"), document.fonts.load("600 40px Inter")]); } catch { /* fallback fonts */ }
-    if (img.naturalWidth) {
-      const s = Math.max(W / img.naturalWidth, H / img.naturalHeight), iw = img.naturalWidth * s, ih = img.naturalHeight * s;
-      g.drawImage(img, (W - iw) / 2 - 80, (H - ih) / 2, iw, ih);
-    } else { g.fillStyle = "#1a1208"; g.fillRect(0, 0, W, H); }
-    let gr = g.createLinearGradient(0, 0, 0, H);
-    gr.addColorStop(0, "rgba(11,12,14,.55)"); gr.addColorStop(.45, "rgba(11,12,14,.25)"); gr.addColorStop(1, "rgba(11,12,14,.95)");
-    g.fillStyle = gr; g.fillRect(0, 0, W, H);
-    // flag + brand
+    const photo = ITEM_PHOTO[item] && best ? await loadImg(ITEM_PHOTO[item]) : null;
+
+    // background
+    g.globalCompositeOperation = "source-over";
+    g.fillStyle = deep; g.fillRect(0, 0, W, H);
+    if (photo) {
+      const sc = Math.max(W / photo.naturalWidth, H / photo.naturalHeight), iw = photo.naturalWidth * sc, ih = photo.naturalHeight * sc;
+      g.drawImage(photo, (W - iw) / 2, (H - ih) / 2 - 60, iw, ih);
+      let gr = g.createLinearGradient(0, 0, 0, H);
+      gr.addColorStop(0, "rgba(8,9,11,.55)"); gr.addColorStop(.42, "rgba(8,9,11,.15)"); gr.addColorStop(.62, "rgba(8,9,11,.75)"); gr.addColorStop(1, "rgba(8,9,11,.97)");
+      g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    } else {
+      let gr = g.createRadialGradient(W * .62, H * .36, 40, W * .62, H * .36, W * .75);
+      gr.addColorStop(0, col + "55"); gr.addColorStop(.55, col + "12"); gr.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = gr; g.fillRect(0, 0, W, H);
+      g.strokeStyle = col + "14"; g.lineWidth = 2;                 // fine diagonal texture
+      for (let x = -H; x < W; x += 28) { g.beginPath(); g.moveTo(x, H); g.lineTo(x + H, 0); g.stroke(); }
+      // hero silhouette of the item, with a glow
+      const shape = SIL.items[item], size = 560;
+      g.save(); g.shadowColor = col; g.shadowBlur = 80;
+      g.drawImage(SIL.sprite(shape, size, best ? col : col + "66"), W * .62 - size / 2, 180, size, size * shape.h / shape.w);
+      g.restore();
+    }
+    if (ti === 4) {                                                 // "Legend": light rays
+      g.save(); g.translate(W * .62, 420); g.globalCompositeOperation = "lighter";
+      for (let k = 0; k < 18; k++) { g.rotate(Math.PI / 9); g.fillStyle = "rgba(255,230,140,.05)"; g.beginPath(); g.moveTo(0, 0); g.lineTo(900, -40); g.lineTo(900, 40); g.fill(); }
+      g.restore();
+    }
+
+    // brand
     g.fillStyle = "#0057b8"; g.fillRect(80, 84, 56, 20); g.fillStyle = "#ffd500"; g.fillRect(80, 104, 56, 20);
-    g.fillStyle = "#fff"; g.font = "700 38px Unbounded, Inter, sans-serif"; g.textBaseline = "middle";
+    g.fillStyle = "#fff"; g.font = "700 38px Unbounded, Inter, sans-serif"; g.textBaseline = "middle"; g.textAlign = "left";
     g.fillText(t("brand"), 156, 106);
-    // headline
-    const fit = (text, font, maxW, size) => { let s = size; do { g.font = font.replace("{s}", s); s -= 4; } while (g.measureText(text).width > maxW && s > 20); };
+    // tier badge
+    const label = t("tier." + (ti + 1)).toUpperCase();
+    g.font = "800 28px Unbounded, Inter, sans-serif";
+    const bw = g.measureText(label).width + 56;
+    g.fillStyle = col; roundRect(g, 80, 160, bw, 60, 30); g.fill();
+    g.fillStyle = ti >= 2 ? "#111" : "#fff"; g.fillText(label, 108, 191);
+    // stars for the tier (1–5)
+    for (let k = 0; k < 5; k++) { g.fillStyle = k <= ti ? col : "rgba(255,255,255,.18)"; star(g, 110 + k * 44, 262, 15); }
+
+    // text block
+    const fit = (text, weight, maxW, size) => { let s = size; do { g.font = `${weight} ${s}px Unbounded, Inter, sans-serif`; s -= 4; } while (g.measureText(text).width > maxW && s > 20); };
     g.textBaseline = "alphabetic";
-    g.fillStyle = "#ffd500"; g.font = "600 40px Inter, sans-serif";
-    g.fillText(t("img.title"), 80, 820);
-    fit(state.shareAmount, "800 {s}px Unbounded, Inter, sans-serif", W - 160, 130);
-    g.fillStyle = "#fff"; g.fillText(state.shareAmount, 80, 960);
-    g.font = "600 44px Inter, sans-serif"; g.fillStyle = "rgba(255,255,255,.8)";
-    g.fillText("= " + (state.shareBest ? `${fmtInt(state.shareBest.q)} ×` : ""), 80, 1050);
-    fit(state.shareBest ? t("item." + state.shareBest.id) : t("co.none"), "800 {s}px Unbounded, Inter, sans-serif", W - 160, 72);
-    g.fillStyle = "#fff"; g.fillText(state.shareBest ? t("item." + state.shareBest.id) : "", 80, 1140);
-    g.font = "600 32px Inter, sans-serif"; g.fillStyle = "rgba(255,255,255,.7)";
-    g.fillText(t("img.foot") + " → " + location.host, 80, 1260);
-    g.font = "400 20px Inter, sans-serif"; g.fillStyle = "rgba(255,255,255,.45)";
-    g.fillText("Photo: General Staff of the Armed Forces of Ukraine, CC BY 4.0", 80, 1305);
-    return new Promise(res => c.toBlob(res, "image/png"));
+    g.fillStyle = col; g.font = "700 36px Inter, sans-serif"; g.fillText(t("img.title"), 80, 800);
+    fit(state.shareAmount, 800, W - 160, 140);
+    g.fillStyle = "#fff"; g.fillText(state.shareAmount, 80, 940);
+    if (best) {
+      const name = t("item." + best.id);
+      g.font = "600 44px Inter, sans-serif"; g.fillStyle = "rgba(255,255,255,.85)";
+      g.fillText(`= ${fmtInt(best.q)} ×`, 80, 1030);
+      fit(name, 800, W - 160, 70); g.fillStyle = "#fff"; g.fillText(name, 80, 1112);
+      // a row of small icons, one per unit (max 12)
+      const n = Math.min(12, best.q), ic = SIL.items[best.id], iw = 58;
+      const spr = SIL.sprite(ic, iw * 2, col);
+      for (let k = 0; k < n; k++) g.drawImage(spr, 80 + k * (iw + 12), 1140, iw, iw);
+      if (best.q > 12) { g.font = "700 34px Inter, sans-serif"; g.fillStyle = col; g.fillText(`+${fmtInt(best.q - 12)}`, 80 + 12 * (iw + 12), 1184); }
+    } else {
+      fit(t("img.none"), 800, W - 160, 56); g.fillStyle = "#fff"; g.fillText(t("img.none"), 80, 1060);
+    }
+    g.font = "600 30px Inter, sans-serif"; g.fillStyle = "rgba(255,255,255,.72)";
+    g.fillText(t("img.foot") + " → " + (location.host + location.pathname.replace(/[^/]*$/, "")).replace(/\/$/, ""), 80, 1272);
+    if (photo) { g.font = "400 20px Inter, sans-serif"; g.fillStyle = "rgba(255,255,255,.45)"; g.fillText("Photo: General Staff of the Armed Forces of Ukraine, CC BY 4.0", 80, 1310); }
+  }
+  function roundRect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+  function star(g, cx, cy, r) {
+    g.beginPath();
+    for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * .45 : r; g.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); }
+    g.closePath(); g.fill();
+  }
+  function renderTiers() {
+    const ti = tierOf(state.shareUah || 0);
+    $("#co-tier").textContent = t("tier." + (ti + 1));
+    $("#co-tier").style.setProperty("--tc", TIERS[ti][1]);
+    $("#co-tier-d").textContent = t("tier." + (ti + 1) + ".d");
+    $("#co-tiers").innerHTML = TIERS.map((tr, i) => `<li class="${i === ti ? "on" : ""}${i < ti ? " past" : ""}" style="--tc:${tr[1]}">
+      <span>${esc(t("tier." + (i + 1)))}</span><span class="muted">${esc(t("tier.from", { v: "₴" + fmtInt(tr[0]) }))}</span></li>`).join("");
+  }
+  let shareTimer = 0;
+  function scheduleShareCard() {
+    const cv = $("#co-canvas"); if (!cv) return;
+    renderTiers();
+    clearTimeout(shareTimer);
+    shareTimer = setTimeout(() => drawShareCard(cv), 120);
   }
 
   function initContribute() {
@@ -1048,26 +1125,25 @@
       const text = t("co.share.text", { a: state.shareAmount, what: state.shareWhat });
       const url = location.origin + location.pathname.replace(/[^/]*$/, "") + "?lang=" + state.lang;
       try {
+        const blob = await new Promise(res => $("#co-canvas").toBlob(res, "image/png"));
+        const file = blob && new File([blob], "my-contribution.png", { type: "image/png" });
+        if (file && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text: text + " " + url }); return; }
         if (navigator.share) { await navigator.share({ text, url }); return; }
         await navigator.clipboard.writeText(text + " " + url);
         const b = $("#co-share"); b.textContent = t("co.copied");
         setTimeout(() => { b.textContent = t("co.share"); }, 1800);
       } catch { /* user cancelled */ }
     });
-    $("#co-image").addEventListener("click", async () => {
-      const blob = await makeShareImage();
-      if (!blob) return;
-      const file = new File([blob], "my-contribution.png", { type: "image/png" });
-      if (navigator.canShare && navigator.canShare({ files: [file] }) && matchMedia("(pointer: coarse)").matches) {
-        try { await navigator.share({ files: [file], text: t("co.share.text", { a: state.shareAmount, what: state.shareWhat }) }); return; } catch { /* fall back to preview */ }
-      }
-      if (state.shareUrl) URL.revokeObjectURL(state.shareUrl);
-      state.shareUrl = URL.createObjectURL(blob);
-      $("#co-preview-img").src = state.shareUrl;
-      $("#co-preview-img").alt = t("co.share.text", { a: state.shareAmount, what: state.shareWhat });
-      $("#co-download").href = state.shareUrl;
-      $("#co-preview").classList.add("on");
+    $("#co-download").addEventListener("click", () => {
+      $("#co-canvas").toBlob(blob => {
+        if (!blob) return;
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = "my-contribution.png";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      }, "image/png");
     });
+    $("#co-canvas").setAttribute("aria-label", t("st3.t"));
   }
 
   function renderAll(first = true) {

@@ -32,19 +32,17 @@
     <section class="hero hero3" aria-labelledby="hero-h1">
       <div class="hero-video" aria-hidden="true">
         <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/media/hero-video-poster.jpg">
-          <source src="assets/media/hero-video.webm" type="video/webm">
-          <source src="assets/media/hero-video.mp4" type="video/mp4">
+          <source src="assets/media/hero-1080.mp4" type="video/mp4" media="(min-width: 1000px)">
+          <source src="assets/media/hero-720.mp4" type="video/mp4">
         </video>
       </div>
       <div class="wrap">
         <span class="eyebrow"><span class="live-dot" aria-hidden="true"></span><span id="hero-day">&nbsp;</span></span>
         <h1 class="kt-title" id="hero-h1" data-i18n="kt.title">ЦІНА ВІЙНИ</h1>
+        <p class="counter-label" data-i18n="hero.label"></p>
+        <div class="hero-counter num" id="hero-total">…</div>
+        <div class="counter-meta"><span id="hero-today"></span><span class="muted" data-i18n="hero.live"></span></div>
         <div class="kt-rot" id="kt-rot" aria-live="polite"></div>
-        <p class="hero-sub" data-i18n="hero.sub"></p>
-        <div class="hero-live">
-          <div class="hero-live-num num" id="hero-total">…</div>
-          <div class="hero-live-l"><span data-i18n="hero.label"></span><span id="hero-today"></span></div>
-        </div>
         <div class="hero-actions">
           <a class="cta" href="#contribute" data-i18n="hero.cta">Долучитися</a>
           <a class="cta alt" href="#russia" data-i18n="hero.explore">Дивитися цифри</a>
@@ -56,7 +54,7 @@
           <a href="#partners"><div class="v num" data-count="pa"></div><div class="l" data-i18n="key.pa"></div></a>
         </div>
       </div>
-      <p class="credit" data-i18n="credit.video">Відео: 26 ОАБр, ГУР МО, Повітряні сили ЗСУ, Суспільне Око (CC BY 4.0); армія США (public domain)</p>
+      <p class="credit" data-i18n="credit.video">Відео: 26 ОАБр, ГУР МО, Суспільне Око (CC BY 4.0); армія США (public domain)</p>
     </section>
 
     <div class="newsline" aria-label="">
@@ -67,13 +65,13 @@
 
     <!-- 01 russia -->
     <section class="chapter" id="russia">
-      <div class="media" data-parallax style="background-image:url('assets/media/himars.webp')"></div>
+      <div class="media" data-parallax style="background-image:url('assets/media/pion.webp')"></div>
       <div class="wrap reveal" data-no="01">
         <div class="no" data-i18n="ch.1">Розділ 01</div>
         <h2 data-i18n="ru.title">Ціна війни для росії</h2>
         <p class="lead" data-i18n="ru.lead"></p>
       </div>
-      <p class="credit"><a href="https://commons.wikimedia.org/wiki/File:Ukrainian_HIMARS_in_Zaporizhya_oblast,_early_June_2022_(2).jpg" target="_blank" rel="noopener" data-i18n="credit.himars">Фото: Генштаб ЗСУ, CC BY 4.0</a></p>
+      <p class="credit"><a href="https://commons.wikimedia.org/wiki/File:UA_43rd_brigade_firing_2S7_Pion_03.jpg" target="_blank" rel="noopener" data-i18n="credit.himars">Фото: 43 ОАБр, CC BY 4.0</a></p>
     </section>
     <section class="block">
       <div class="wrap">
@@ -100,7 +98,7 @@
             <div class="chips" id="wall-chips"></div>
           </div>
           <canvas class="wall-canvas" id="wall" role="img"></canvas>
-          <div class="wall-foot"><span id="wall-total"></span><span id="wall-cost"></span></div>
+          <div class="wall-foot"><span id="wall-total"></span><span class="wall-hint" id="wall-hint"></span><span id="wall-cost"></span></div>
         </div>
 
         <div class="losses reveal" id="losses"></div>
@@ -249,56 +247,75 @@
     <section class="contrib" id="contribute">
       <div class="media" aria-hidden="true">
         <video id="flag-video" muted loop playsinline preload="none" poster="assets/media/flag-poster.jpg">
-          <source src="assets/media/flag.webm" type="video/webm">
           <source src="assets/media/flag.mp4" type="video/mp4">
         </video>
       </div>
       <div class="wrap">
         <div class="reveal" data-no="05">
           <div class="no" data-i18n="ch.5">Розділ 05</div>
-          <h2 data-i18n="co.title">Твій особистий внесок</h2>
+          <h2 data-i18n="co.title">Зроби свій внесок</h2>
           <p class="lead" data-i18n="co.lead"></p>
         </div>
-        <div class="funds-block reveal" id="fundraisers">
-          <div class="fr-head">
-            <div><div class="h-display" data-i18n="fr.title"></div><p class="chart-sub" data-i18n="fr.lead"></p></div>
+
+        <!-- Step 1: pick a fundraiser -->
+        <div class="step reveal" id="fundraisers">
+          <div class="step-head">
+            <span class="step-n">01</span>
+            <div><div class="h-display" data-i18n="st1.t"></div><p class="chart-sub" data-i18n="fr.lead"></p></div>
             <a class="btn-ghost fr-add" href="#contact" data-i18n="fr.add"></a>
           </div>
           <div class="fr-grid stagger" id="fr-grid"></div>
         </div>
-        <div class="h-display calc-title reveal" data-i18n="co.calc.title"></div>
-        <div class="calc reveal">
-          <div class="card">
-            <div class="field">
-              <label for="co-amount" data-i18n="co.amount"></label>
-              <div class="input-row">
-                <input id="co-amount" type="number" inputmode="decimal" min="0" step="any" value="5000" class="num">
-                <select id="co-cur" data-i18n-attr="aria-label:co.currency">
-                  <option value="UAH">₴ UAH</option>
-                  <option value="USD">$ USD</option>
-                  <option value="EUR">€ EUR</option>
-                </select>
+
+        <!-- Step 2: what the donation buys -->
+        <div class="step reveal">
+          <div class="step-head">
+            <span class="step-n">02</span>
+            <div><div class="h-display" data-i18n="st2.t"></div><p class="chart-sub" data-i18n="st2.d"></p></div>
+          </div>
+          <div class="calc">
+            <div class="card">
+              <div class="field">
+                <label for="co-amount" data-i18n="co.amount"></label>
+                <div class="input-row">
+                  <input id="co-amount" type="number" inputmode="decimal" min="0" step="any" value="5000" class="num">
+                  <select id="co-cur" data-i18n-attr="aria-label:co.currency">
+                    <option value="UAH">₴ UAH</option>
+                    <option value="USD">$ USD</option>
+                    <option value="EUR">€ EUR</option>
+                  </select>
+                </div>
               </div>
+              <div class="presets" id="co-presets"></div>
+              <p class="source" id="co-fx"></p>
+              <h3 style="margin-top:22px" data-i18n="co.funds"></h3>
+              <div class="funds" id="co-funds"></div>
             </div>
-            <div class="presets" id="co-presets"></div>
-            <p class="source" id="co-fx"></p>
-            <div class="share-row">
-              <button class="cta" id="co-image" type="button" data-i18n="co.image"></button>
-              <button class="btn-ghost" id="co-share" type="button" data-i18n="co.share"></button>
-            </div>
-            <div class="share-preview" id="co-preview">
-              <img id="co-preview-img" alt="">
-              <div class="share-row">
-                <a class="btn-ghost" id="co-download" download="my-contribution.png" style="display:inline-flex;align-items:center;text-decoration:none" data-i18n="co.download"></a>
-              </div>
+            <div class="card">
+              <h3 data-i18n="co.result"></h3>
+              <ul class="buys" id="co-buys"></ul>
+              <p id="co-none" class="muted" hidden data-i18n="co.none" style="margin-top:10px"></p>
             </div>
           </div>
-          <div class="card">
-            <h3 data-i18n="co.result"></h3>
-            <ul class="buys" id="co-buys"></ul>
-            <p id="co-none" class="muted" hidden data-i18n="co.none" style="margin-top:10px"></p>
-            <h3 style="margin-top:24px" data-i18n="co.funds"></h3>
-            <div class="funds" id="co-funds"></div>
+        </div>
+
+        <!-- Step 3: share -->
+        <div class="step reveal">
+          <div class="step-head">
+            <span class="step-n">03</span>
+            <div><div class="h-display" data-i18n="st3.t"></div><p class="chart-sub" data-i18n="st3.d"></p></div>
+          </div>
+          <div class="share-card card">
+            <canvas class="share-canvas" id="co-canvas" width="1080" height="1350" role="img"></canvas>
+            <div class="share-side">
+              <div class="tier-badge" id="co-tier"></div>
+              <p class="share-tier-d" id="co-tier-d"></p>
+              <ol class="tiers" id="co-tiers"></ol>
+              <div class="share-row">
+                <button class="cta" id="co-download" type="button" data-i18n="co.download"></button>
+                <button class="btn-ghost" id="co-share" type="button" data-i18n="co.share"></button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -329,6 +346,7 @@
 
   <div class="tip" id="tip" role="tooltip"></div>
   <script src="assets/i18n.js"></script>
+  <script src="assets/silhouettes.js"></script>
   <script src="assets/fx.js"></script>
   <script src="assets/vendor/d3-array.min.js"></script>
   <script src="assets/vendor/d3-geo.min.js"></script>

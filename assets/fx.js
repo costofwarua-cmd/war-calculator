@@ -141,62 +141,95 @@
   }
 
   /* ================= wall of losses ================= */
-  // Silhouettes drawn in a 24×14 box, facing left (towards Ukraine's side of the map, visually "retreating" right).
-  const ICONS = {
-    tank(c) { c.roundRect(2, 9, 20, 4, 2); c.rect(4, 6, 16, 3); c.roundRect(8, 3, 8, 3.5, 1.5); c.rect(0, 4, 9, 1.2); },
-    afv(c) { c.roundRect(1, 9, 22, 4, 2); c.moveTo(3, 9); c.lineTo(5, 4); c.lineTo(21, 4); c.lineTo(22, 9); c.closePath(); c.rect(9, 2, 5, 2); c.rect(2, 2.6, 8, .9); },
-    artillery(c) { c.arc(8, 11, 2.6, 0, 6.3); c.moveTo(19.6, 11); c.arc(17, 11, 2.6, 0, 6.3); c.rect(6, 7.5, 13, 2.5); c.moveTo(9, 7.5); c.lineTo(1, 1.5); c.lineTo(2, .5); c.lineTo(11, 7.5); c.closePath(); },
-    mlrs(c) { c.arc(5, 12, 1.8, 0, 6.3); c.moveTo(12.8, 12); c.arc(11, 12, 1.8, 0, 6.3); c.moveTo(20.8, 12); c.arc(19, 12, 1.8, 0, 6.3); c.rect(1, 8, 22, 3); c.rect(1, 5, 5, 3); c.moveTo(8, 8); c.lineTo(21, 3); c.lineTo(23, 6); c.lineTo(10, 8); c.closePath(); },
-    aa(c) { c.arc(6, 12, 1.8, 0, 6.3); c.moveTo(19.8, 12); c.arc(18, 12, 1.8, 0, 6.3); c.rect(2, 8, 20, 3); c.rect(7, 2, 3, 6); c.rect(12, 2, 3, 6); c.rect(17, 3, 2.5, 5); },
-    plane(c) { c.moveTo(0, 7); c.lineTo(6, 5.6); c.lineTo(12, 0); c.lineTo(14, 0); c.lineTo(11, 5.6); c.lineTo(20, 5.6); c.lineTo(23, 2); c.lineTo(24, 2); c.lineTo(23, 7); c.lineTo(24, 12); c.lineTo(23, 12); c.lineTo(20, 8.4); c.lineTo(11, 8.4); c.lineTo(14, 14); c.lineTo(12, 14); c.lineTo(6, 8.4); c.closePath(); },
-    heli(c) { c.ellipse(8, 8, 6.5, 3.5, 0, 0, 6.3); c.rect(13, 7, 9, 1.8); c.rect(21, 4.5, 2, 5); c.rect(0, 2.6, 18, 1); c.rect(7.5, 3, 1.4, 2); c.rect(3, 12, 11, .9); },
-    ship(c) { c.moveTo(0, 8); c.lineTo(24, 8); c.lineTo(21, 13); c.lineTo(3, 13); c.closePath(); c.rect(7, 4.5, 9, 3.5); c.rect(10, 1, 2, 3.5); },
-    drone(c) { c.moveTo(0, 7); c.lineTo(24, 1); c.lineTo(20, 7); c.lineTo(24, 13); c.closePath(); },
-    missile(c) { c.moveTo(0, 7); c.lineTo(4, 5.6); c.lineTo(19, 5.6); c.lineTo(23, 2.5); c.lineTo(23, 11.5); c.lineTo(19, 8.4); c.lineTo(4, 8.4); c.closePath(); c.rect(9, 3, 3, 8); },
-  };
-  const WALL_ICON = {
+  // Small silhouettes fill the canvas one by one, then fly together into one big silhouette of the same
+  // category. Clicking toggles between the wall and the big shape. Returns { cancel, toggle }.
+  const WALL_SHAPE = {
     tanks: "tank", armoured_fighting_vehicles: "afv", artillery_systems: "artillery", mlrs: "mlrs",
-    aa_warfare_systems: "aa", planes: "plane", helicopters: "heli", warships_cutters: "ship",
+    aa_warfare_systems: "aa", planes: "plane", helicopters: "helicopter", warships_cutters: "ship",
     cruise_missiles: "missile", uav_systems: "drone",
   };
+  const ease = t => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-  // Draws `count` icons, revealing them over ~1.4s. Returns a cancel function.
-  function wall(canvas, kind, count, color) {
+  function wall(canvas, kind, count, color, { onMorph } = {}) {
+    const shape = window.SIL.vehicles[WALL_SHAPE[kind] || "tank"];
     const ctx = canvas.getContext("2d");
     const dpr = Math.min(2, devicePixelRatio || 1);
     const W = canvas.clientWidth || 600;
-    const targetH = W < 600 ? W * 1.15 : Math.min(520, Math.max(220, W * .45));
-    let cw = Math.sqrt((W * targetH) / (Math.max(1, count) * .72));
-    cw = Math.max(9, Math.min(46, cw));
-    const ch = cw * .72, cols = Math.max(1, Math.floor(W / cw)), rows = Math.ceil(count / cols);
-    const H = Math.ceil(rows * ch);
+    const H = Math.round(W < 600 ? W * 1.05 : Math.min(560, Math.max(300, W * .5)));
     canvas.style.height = H + "px";
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const scale = (cw * .8) / 24, pad = (W - cols * cw) / 2;
-    const path = new Path2D();
-    ICONS[WALL_ICON[kind] || "tank"](path);
-    let raf, start = performance.now(), drawn = 0;
-    const dur = reduced ? 0 : 1400;
-    function step(now) {
-      const k = dur ? Math.min(1, (now - start) / dur) : 1;
-      const upto = Math.round(count * (1 - Math.pow(1 - k, 3)));
-      for (let i = drawn; i < upto; i++) {
-        const r = Math.floor(i / cols), col = i % cols;
-        ctx.save();
-        ctx.translate(pad + col * cw + cw * .1, r * ch + (ch - 14 * scale) / 2);
-        ctx.scale(scale, scale);
-        ctx.fillStyle = color;
-        ctx.globalAlpha = .55 + ((i * 7919) % 45) / 100;
-        ctx.fill(path);
-        ctx.restore();
+    const ratio = shape.h / shape.w;
+
+    // Grid: largest cell that fits `count` icons.
+    let cw = Math.sqrt((W * H) / (Math.max(1, count) * ratio * 1.25));
+    let cols, rows;
+    for (;;) { cols = Math.max(1, Math.floor(W / cw)); rows = Math.ceil(count / cols); if (rows * cw * ratio * 1.25 <= H || cw < 4) break; cw *= .96; }
+    const ch = cw * ratio * 1.25, gx = (W - cols * cw) / 2, gy = (H - rows * ch) / 2;
+    const iconW = cw * .86;
+
+    // Big shape: sample the silhouette on a grid so we get at least `count` target points.
+    const box = Math.min(W * .94, (H * .86) / ratio), bx = (W - box) / 2, by = (H - box * ratio) / 2;
+    const off = document.createElement("canvas"); off.width = Math.ceil(W); off.height = Math.ceil(H);
+    const o = off.getContext("2d", { willReadFrequently: true });
+    o.save(); o.translate(bx, by); o.scale(box / shape.w, box / shape.w); window.SIL.paint(o, shape, "#000"); o.restore();
+    const px = o.getImageData(0, 0, off.width, off.height).data;
+    const inside = (x, y) => px[((y | 0) * off.width + (x | 0)) * 4 + 3] > 128;
+    const sampleAt = g => { const pts = []; for (let y = g / 2; y < H; y += g * ratio * 1.1) for (let x = g / 2; x < W; x += g) if (inside(x, y)) pts.push([x, y]); return pts; };
+    let lo = 2, hi = 60, pts = sampleAt(lo);
+    for (let i = 0; i < 18; i++) { const mid = (lo + hi) / 2, p = sampleAt(mid); if (p.length >= count) { lo = mid; pts = p; } else hi = mid; }
+    const g = lo;
+    if (pts.length > count) { const step = pts.length / count; pts = Array.from({ length: count }, (_, i) => pts[Math.floor(i * step)]); }
+    while (pts.length < count) pts.push(pts[pts.length % Math.max(1, pts.length)] || [W / 2, H / 2]);
+    const smallW = g * 1.05;
+
+    // Icons sorted left→right in both layouts so they sweep across rather than criss-cross.
+    const icons = Array.from({ length: count }, (_, i) => {
+      const col = i % cols, row = Math.floor(i / cols);
+      return { gx: gx + col * cw + (cw - iconW) / 2, gy: gy + row * ch, a: .55 + ((i * 7919) % 45) / 100, i };
+    });
+    const byX = [...icons].sort((a, b) => a.gx - b.gx || a.gy - b.gy);
+    const tp = [...pts].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    byX.forEach((ic, k) => { ic.tx = tp[k][0] - smallW / 2; ic.ty = tp[k][1] - smallW * ratio / 2; ic.delay = (tp[k][0] / W) * .35 + Math.random() * .12; });
+
+    const sprite = window.SIL.sprite(shape, Math.max(iconW, smallW) * dpr * 1.2, color);
+    let raf = 0, t0 = performance.now(), mode = "fill", from = 0, to = 1, done = false;
+    const FILL = reduced ? 0 : 1300, HOLD = reduced ? 0 : 700, MORPH = reduced ? 0 : 1700;
+
+    function drawAt(m, filled) {                          // m: 0 = wall, 1 = big shape
+      ctx.clearRect(0, 0, W, H);
+      for (let n = 0; n < filled; n++) {
+        const ic = icons[n];
+        const k = MORPH ? ease(Math.min(1, Math.max(0, m * 1.5 - ic.delay)) ) : m;
+        const w = iconW + (smallW - iconW) * k;
+        const x = ic.gx + (ic.tx - ic.gx) * k, y = ic.gy + (ic.ty - ic.gy) * k;
+        ctx.globalAlpha = ic.a + (1 - ic.a) * k;
+        ctx.drawImage(sprite, x, y, w, w * ratio);
       }
-      drawn = upto;
-      if (k < 1) raf = requestAnimationFrame(step);
+      ctx.globalAlpha = 1;
     }
-    ctx.clearRect(0, 0, W, H);
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
+    function frame(now) {
+      const t = now - t0;
+      if (mode === "fill") {
+        const k = FILL ? Math.min(1, t / FILL) : 1;
+        drawAt(0, Math.round(count * (1 - Math.pow(1 - k, 3))));
+        if (t >= FILL + HOLD) { mode = "morph"; t0 = now; from = 0; to = 1; }
+      } else {
+        const k = MORPH ? Math.min(1, (now - t0) / MORPH) : 1, m = from + (to - from) * k;
+        drawAt(m, count);
+        if (k >= 1) { done = true; onMorph && onMorph(to === 1); raf = 0; return; }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    raf = requestAnimationFrame(frame);
+    return {
+      cancel() { cancelAnimationFrame(raf); raf = 0; },
+      toggle() {
+        if (!done) return;
+        done = false; mode = "morph"; from = to; to = 1 - to; t0 = performance.now();
+        raf = requestAnimationFrame(frame);
+      },
+    };
   }
 
   window.FX = { sky, wall, reduced };
