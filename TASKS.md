@@ -48,8 +48,9 @@
 ## Далі
 - [ ] **Замінити приклади зборів на справжні** (data/fundraisers.json)
 - [ ] **Вказати справжні email і Telegram** (data/site.json)
-- [ ] Вибрати домен і назву
-- [ ] Створити GitHub-репозиторій, увімкнути Actions (read/write), задеплоїти на Cloudflare Pages
+- [x] Опубліковано на GitHub Pages (2026-09-30): https://costofwarua-cmd.github.io/war-calculator/ — акаунт costofwarua-cmd, пошта проєкту costofwar.ua@gmail.com; щоденне оновлення даних працює
+- [ ] Купити домен і підключити до GitHub Pages
+- [ ] Підключити GA4 + банер згоди (Consent Mode v2), потім Google Ads
 - [ ] Перевірити вартість одиниць техніки (`data/static.json → unit_costs`) з кимось із військової аналітики
 - [ ] Звірити ціни в калькуляторі з фондами (Повернись живим, Притула) і, можливо, домовитися про партнерство
 - [ ] OG-картинка для прев'ю посилання (1200×630)

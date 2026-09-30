@@ -1,5 +1,7 @@
 # Ціна війни / Cost of War
 
+**Сайт:** https://costofwarua-cmd.github.io/war-calculator/ · репозиторій: https://github.com/costofwarua-cmd/war-calculator
+
 Статичний двомовний (UA/EN) сайт: втрати росії та їхня орієнтовна вартість, збитки Україні, військові витрати сторін, допомога партнерів і калькулятор особистого внеску.
 
 Збирання не потрібне: це чисті HTML, CSS і JS, без Node.
