@@ -1,0 +1,7 @@
+{
+  "_comment": "Site-wide settings. Replace the placeholder contacts before publishing; empty values hide the button.",
+  "contact": {
+    "email": "partners@example.com",
+    "telegram": "https://t.me/your_channel"
+  }
+}

@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ціна війни — калькулятор війни росії проти України</title>
+  <meta name="description" data-i18n-attr="content:meta.desc" content="Скільки коштує війна: втрати росії, збитки України, витрати сторін, допомога партнерів і твій особистий внесок.">
+  <meta name="theme-color" content="#0b0c0e">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ціна війни / Cost of War">
+  <meta property="og:description" content="Втрати росії, збитки України, витрати сторін, допомога партнерів і твій внесок — з джерелами.">
+  <meta property="og:image" content="assets/media/hero.webp">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='3' height='1' fill='%230057b8'/%3E%3Crect y='1' width='3' height='1' fill='%23ffd500'/%3E%3C/svg%3E">
+  <link rel="preload" as="image" href="assets/media/hero-video-poster.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body data-page="home">
+  <div class="intro" id="intro" hidden aria-hidden="true">
+    <div class="intro-inner">
+      <p class="intro-date" id="intro-date">24.02.2022 · 04:00</p>
+      <p class="intro-line" id="intro-line"></p>
+      <p class="intro-day"><span id="intro-label"></span> <span class="num" id="intro-day">1</span></p>
+    </div>
+    <button class="intro-skip" id="intro-skip" type="button"></button>
+  </div>
+  <main>
+    <!-- Hero: war footage + kinetic type -->
+    <section class="hero hero3" aria-labelledby="hero-h1">
+      <div class="hero-video" aria-hidden="true">
+        <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/media/hero-video-poster.jpg">
+          <source src="assets/media/hero-video.webm" type="video/webm">
+          <source src="assets/media/hero-video.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="wrap">
+        <span class="eyebrow"><span class="live-dot" aria-hidden="true"></span><span id="hero-day">&nbsp;</span></span>
+        <h1 class="kt-title" id="hero-h1" data-i18n="kt.title">ЦІНА ВІЙНИ</h1>
+        <div class="kt-rot" id="kt-rot" aria-live="polite"></div>
+        <p class="hero-sub" data-i18n="hero.sub"></p>
+        <div class="hero-live">
+          <div class="hero-live-num num" id="hero-total">…</div>
+          <div class="hero-live-l"><span data-i18n="hero.label"></span><span id="hero-today"></span></div>
+        </div>
+        <div class="hero-actions">
+          <a class="cta" href="#contribute" data-i18n="hero.cta">Долучитися</a>
+          <a class="cta alt" href="#russia" data-i18n="hero.explore">Дивитися цифри</a>
+        </div>
+        <div class="keynums stagger reveal" style="margin-top:40px">
+          <a href="#russia"><div class="v num" data-count="ru"></div><div class="l" data-i18n="key.ru"></div></a>
+          <a href="#ukraine"><div class="v num" data-count="ua"></div><div class="l" data-i18n="key.ua"></div></a>
+          <a href="#spending"><div class="v num" data-count="sp"></div><div class="l" data-i18n="key.sp"></div></a>
+          <a href="#partners"><div class="v num" data-count="pa"></div><div class="l" data-i18n="key.pa"></div></a>
+        </div>
+      </div>
+      <p class="credit" data-i18n="credit.video">Відео: 26 ОАБр, ГУР МО, Повітряні сили ЗСУ, Суспільне Око (CC BY 4.0); армія США (public domain)</p>
+    </section>
+
+    <div class="newsline" aria-label="">
+      <span class="newsline-tag"><span class="live-dot" aria-hidden="true"></span><span data-i18n="news.tag"></span></span>
+      <div class="newsline-track"><div class="newsline-run" id="newsline"></div></div>
+    </div>
+
+
+    <!-- 01 russia -->
+    <section class="chapter" id="russia">
+      <div class="media" data-parallax style="background-image:url('assets/media/himars.webp')"></div>
+      <div class="wrap reveal" data-no="01">
+        <div class="no" data-i18n="ch.1">Розділ 01</div>
+        <h2 data-i18n="ru.title">Ціна війни для росії</h2>
+        <p class="lead" data-i18n="ru.lead"></p>
+      </div>
+      <p class="credit"><a href="https://commons.wikimedia.org/wiki/File:Ukrainian_HIMARS_in_Zaporizhya_oblast,_early_June_2022_(2).jpg" target="_blank" rel="noopener" data-i18n="credit.himars">Фото: Генштаб ЗСУ, CC BY 4.0</a></p>
+    </section>
+    <section class="block">
+      <div class="wrap">
+        <!-- time machine -->
+        <div class="card tm reveal" id="tm">
+          <div class="tm-top">
+            <div><div class="h-display" data-i18n="tm.title"></div><p class="chart-sub" data-i18n="tm.lead"></p></div>
+            <div style="text-align:right"><div class="tm-day" id="tm-day"></div><div class="tm-date" id="tm-date"></div></div>
+          </div>
+          <div class="tm-cost num" id="tm-cost"></div>
+          <p class="muted" data-i18n="hero.label"></p>
+          <div class="tm-chart" id="tm-chart"></div>
+          <div class="tm-controls">
+            <button class="play" id="tm-play" type="button" data-i18n-attr="aria-label:tm.play">▶</button>
+            <input type="range" id="tm-range" min="0" max="1" value="1" data-i18n-attr="aria-label:tm.title">
+          </div>
+          <div class="tm-grid" id="tm-grid"></div>
+        </div>
+
+        <!-- equipment wall -->
+        <div class="card chart-card reveal">
+          <div class="chart-head">
+            <div><div class="h-display" data-i18n="wall.title"></div><p class="chart-sub" id="wall-sub"></p></div>
+            <div class="chips" id="wall-chips"></div>
+          </div>
+          <canvas class="wall-canvas" id="wall" role="img"></canvas>
+          <div class="wall-foot"><span id="wall-total"></span><span id="wall-cost"></span></div>
+        </div>
+
+        <div class="losses reveal" id="losses"></div>
+
+        <div class="card chart-card reveal">
+          <div class="chart-head">
+            <div><div class="h-display" data-i18n="ru.chart.title"></div><p class="chart-sub" data-i18n="ru.chart.sub"></p></div>
+          </div>
+          <div class="hbars" id="ru-chart"></div>
+        </div>
+        <p class="source" data-i18n="ru.source"></p>
+      </div>
+    </section>
+
+    <!-- 02 Ukraine -->
+    <section class="chapter" id="ukraine">
+      <div class="media" data-parallax style="background-image:url('assets/media/sunflowers.webp')"></div>
+      <div class="wrap reveal" data-no="02">
+        <div class="no" data-i18n="ch.2">Розділ 02</div>
+        <h2 data-i18n="ua.title">Збитки Україні</h2>
+        <p class="lead" data-i18n="ua.lead"></p>
+      </div>
+      <p class="credit"><a href="https://commons.wikimedia.org/wiki/File:Cumulonimbus_storm_clouds_over_sunflower_field_Ukraine.jpg" target="_blank" rel="noopener" data-i18n="credit.sunflowers">Фото: Domalchuk, CC BY 4.0</a></p>
+    </section>
+    <section class="block">
+      <div class="wrap">
+        <div class="stats reveal">
+          <div class="card stat"><div class="v num" id="ua-damage"></div><div class="l" data-i18n="ua.damage"></div></div>
+          <div class="card stat"><div class="v num" id="ua-needs"></div><div class="l" data-i18n="ua.needs"></div></div>
+          <div class="card stat"><div class="v num" id="ua-housing"></div><div class="l" data-i18n="ua.housing"></div></div>
+        </div>
+        <div class="split reveal">
+          <div class="card">
+            <div class="h-display" data-i18n="ua.chart.title"></div>
+            <p class="chart-sub" data-i18n="ua.chart.sub"></p>
+            <div class="hbars" id="ua-chart" style="margin-top:18px"></div>
+          </div>
+          <div class="card civ">
+            <h3><span class="candle" aria-hidden="true"></span><span data-i18n="ua.civ.title"></span></h3>
+            <div class="nums">
+              <div><div class="v num" id="civ-killed"></div><div class="l" data-i18n="ua.civ.killed"></div></div>
+              <div><div class="v num" id="civ-injured"></div><div class="l" data-i18n="ua.civ.injured"></div></div>
+            </div>
+            <p id="civ-note"></p>
+          </div>
+        </div>
+        <p class="source" data-i18n="ua.source"></p>
+      </div>
+    </section>
+
+    <!-- 03 Spending -->
+    <section class="chapter" id="spending">
+      <div class="media" data-parallax style="background-image:url('assets/media/launch.webp')"></div>
+      <div class="wrap reveal" data-no="03">
+        <div class="no" data-i18n="ch.3">Розділ 03</div>
+        <h2 data-i18n="sp.title">Хто скільки витрачає на війну</h2>
+        <p class="lead" data-i18n="sp.lead"></p>
+      </div>
+      <p class="credit"><a href="https://commons.wikimedia.org/wiki/File:Drone_launch_92nd_oshbr.jpg" target="_blank" rel="noopener" data-i18n="credit.launch">Фото: Генштаб ЗСУ / 92 ОШБр, CC BY 4.0</a></p>
+    </section>
+    <section class="block">
+      <div class="wrap">
+        <div class="ticker reveal"><span class="v num" id="sp-live">$0</span><span class="l" data-i18n="sp.live"></span></div>
+        <div class="stats reveal">
+          <div class="card stat"><div class="v num" id="sp-ru"></div><div class="l" data-i18n="sp.sum.ru"></div></div>
+          <div class="card stat"><div class="v num" id="sp-ua"></div><div class="l" data-i18n="sp.sum.ua"></div></div>
+          <div class="card stat"><div class="v num" id="sp-sec"></div><div class="l" data-i18n="sp.persec"></div></div>
+        </div>
+        <div class="card chart-card reveal">
+          <div class="chart-head">
+            <div>
+              <div class="h-display" id="sp-chart-title"></div>
+              <div class="legend" style="margin-top:8px">
+                <span><i style="background:var(--russia)"></i><span data-i18n="sp.russia"></span></span>
+                <span><i style="background:var(--ukraine)"></i><span data-i18n="sp.ukraine"></span></span>
+              </div>
+            </div>
+            <div class="seg-ctl" id="sp-mode" role="group">
+              <button type="button" data-mode="usd" aria-pressed="true" data-i18n="sp.mode.usd"></button>
+              <button type="button" data-mode="gdp" aria-pressed="false" data-i18n="sp.mode.gdp"></button>
+              <button type="button" data-mode="gov" aria-pressed="false" data-i18n="sp.mode.gov"></button>
+            </div>
+          </div>
+          <div id="sp-chart"></div>
+        </div>
+        <p class="source" data-i18n="sp.source"></p>
+      </div>
+    </section>
+
+    <!-- 04 Partners -->
+    <section class="chapter" id="partners">
+      <div class="media" data-parallax style="background-image:url('assets/media/sting.webp')"></div>
+      <div class="wrap reveal" data-no="04">
+        <div class="no" data-i18n="ch.4">Розділ 04</div>
+        <h2 data-i18n="pa.title">Допомога партнерів</h2>
+        <p class="lead" id="pa-lead"></p>
+      </div>
+      <p class="credit"><a href="https://commons.wikimedia.org/wiki/File:Sting_launch_114th_tobr.jpg" target="_blank" rel="noopener" data-i18n="credit.sting">Фото: Генштаб ЗСУ / 114 ОБр ТрО, CC BY 4.0</a></p>
+    </section>
+    <section class="block">
+      <div class="wrap">
+        <div class="globe-wrap reveal">
+          <div class="globe-box">
+            <canvas id="globe" class="globe" role="img" data-i18n-attr="aria-label:globe.title"></canvas>
+            <p class="globe-hint" data-i18n="globe.hint"></p>
+          </div>
+          <div class="globe-side">
+            <div class="h-display" data-i18n="globe.title"></div>
+            <p class="lead" id="globe-lead"></p>
+            <ol class="globe-list" id="globe-list"></ol>
+          </div>
+        </div>
+        <div class="stats four reveal">
+          <div class="card stat"><div class="v num" id="pa-total"></div><div class="l" data-i18n="pa.total"></div></div>
+          <div class="card stat"><div class="v num" id="pa-mil"></div><div class="l" data-i18n="pa.military"></div></div>
+          <div class="card stat"><div class="v num" id="pa-fin"></div><div class="l" data-i18n="pa.financial"></div></div>
+          <div class="card stat"><div class="v num" id="pa-hum"></div><div class="l" data-i18n="pa.humanitarian"></div></div>
+        </div>
+        <div class="card chart-card reveal">
+          <div class="chart-head">
+            <div>
+              <div class="h-display" data-i18n="pa.chart.title"></div>
+              <p class="chart-sub" id="pa-sub"></p>
+              <div class="legend" id="pa-legend" style="margin-top:8px">
+                <span><i style="background:var(--s1)"></i><span data-i18n="pa.military"></span></span>
+                <span><i style="background:var(--s2)"></i><span data-i18n="pa.financial"></span></span>
+                <span><i style="background:var(--s3)"></i><span data-i18n="pa.humanitarian"></span></span>
+              </div>
+            </div>
+            <div class="seg-ctl" id="pa-mode" role="group">
+              <button type="button" data-mode="eur" aria-pressed="true" data-i18n="pa.sort.eur"></button>
+              <button type="button" data-mode="gdp" aria-pressed="false" data-i18n="pa.sort.gdp"></button>
+            </div>
+          </div>
+          <div class="hbars" id="pa-chart"></div>
+          <details class="tbl">
+            <summary id="pa-table-toggle"></summary>
+            <div class="tbl-scroll"><table id="pa-table"></table></div>
+          </details>
+        </div>
+        <p class="source" id="pa-source"></p>
+      </div>
+    </section>
+
+    <!-- 05 Contribution -->
+    <section class="contrib" id="contribute">
+      <div class="media" aria-hidden="true">
+        <video id="flag-video" muted loop playsinline preload="none" poster="assets/media/flag-poster.jpg">
+          <source src="assets/media/flag.webm" type="video/webm">
+          <source src="assets/media/flag.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="wrap">
+        <div class="reveal" data-no="05">
+          <div class="no" data-i18n="ch.5">Розділ 05</div>
+          <h2 data-i18n="co.title">Твій особистий внесок</h2>
+          <p class="lead" data-i18n="co.lead"></p>
+        </div>
+        <div class="funds-block reveal" id="fundraisers">
+          <div class="fr-head">
+            <div><div class="h-display" data-i18n="fr.title"></div><p class="chart-sub" data-i18n="fr.lead"></p></div>
+            <a class="btn-ghost fr-add" href="#contact" data-i18n="fr.add"></a>
+          </div>
+          <div class="fr-grid stagger" id="fr-grid"></div>
+        </div>
+        <div class="h-display calc-title reveal" data-i18n="co.calc.title"></div>
+        <div class="calc reveal">
+          <div class="card">
+            <div class="field">
+              <label for="co-amount" data-i18n="co.amount"></label>
+              <div class="input-row">
+                <input id="co-amount" type="number" inputmode="decimal" min="0" step="any" value="5000" class="num">
+                <select id="co-cur" data-i18n-attr="aria-label:co.currency">
+                  <option value="UAH">₴ UAH</option>
+                  <option value="USD">$ USD</option>
+                  <option value="EUR">€ EUR</option>
+                </select>
+              </div>
+            </div>
+            <div class="presets" id="co-presets"></div>
+            <p class="source" id="co-fx"></p>
+            <div class="share-row">
+              <button class="cta" id="co-image" type="button" data-i18n="co.image"></button>
+              <button class="btn-ghost" id="co-share" type="button" data-i18n="co.share"></button>
+            </div>
+            <div class="share-preview" id="co-preview">
+              <img id="co-preview-img" alt="">
+              <div class="share-row">
+                <a class="btn-ghost" id="co-download" download="my-contribution.png" style="display:inline-flex;align-items:center;text-decoration:none" data-i18n="co.download"></a>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 data-i18n="co.result"></h3>
+            <ul class="buys" id="co-buys"></ul>
+            <p id="co-none" class="muted" hidden data-i18n="co.none" style="margin-top:10px"></p>
+            <h3 style="margin-top:24px" data-i18n="co.funds"></h3>
+            <div class="funds" id="co-funds"></div>
+          </div>
+        </div>
+      </div>
+      <p class="credit"><a href="https://commons.wikimedia.org/wiki/File:%D0%9D%D0%B0%D1%88_%D0%BF%D1%80%D0%B0%D0%BF%D0%BE%D1%80.webm" target="_blank" rel="noopener" data-i18n="credit.flag">Відео: Anastasiia Chu, CC BY-SA 4.0</a></p>
+    </section>
+
+    <!-- 06 Cooperation -->
+    <section class="block contact" id="contact" data-cover="assets/media/sunset.webp">
+      <div class="wrap">
+        <div class="reveal">
+          <div class="no" data-i18n="ct.no"></div>
+          <h2 data-i18n="ct.title"></h2>
+          <p class="lead" data-i18n="ct.lead"></p>
+        </div>
+        <div class="ct-grid stagger reveal">
+          <div class="card ct-card"><span class="ct-ic" aria-hidden="true">01</span><h3 data-i18n="ct.funds.t"></h3><p data-i18n="ct.funds.d"></p></div>
+          <div class="card ct-card"><span class="ct-ic" aria-hidden="true">02</span><h3 data-i18n="ct.brands.t"></h3><p data-i18n="ct.brands.d"></p></div>
+          <div class="card ct-card"><span class="ct-ic" aria-hidden="true">03</span><h3 data-i18n="ct.media.t"></h3><p data-i18n="ct.media.d"></p></div>
+          <div class="card ct-card"><span class="ct-ic" aria-hidden="true">04</span><h3 data-i18n="ct.team.t"></h3><p data-i18n="ct.team.d"></p></div>
+        </div>
+        <div class="hero-actions reveal" id="ct-actions">
+          <a class="cta" id="ct-email" href="#"><span data-i18n="ct.email"></span> →</a>
+          <a class="cta alt" id="ct-tg" href="#" target="_blank" rel="noopener" data-i18n="ct.tg"></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="tip" id="tip" role="tooltip"></div>
+  <script src="assets/i18n.js"></script>
+  <script src="assets/fx.js"></script>
+  <script src="assets/vendor/d3-array.min.js"></script>
+  <script src="assets/vendor/d3-geo.min.js"></script>
+  <script src="assets/vendor/topojson-client.min.js"></script>
+  <script src="assets/globe.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+ "date": "2026-09-29",
+ "day": 1679,
+ "resource": "https://www.facebook.com/GeneralStaff.ua/posts/pfbid026QBfZ2vVnhHKMno72qREXiLdz2PPywKe1KhwEiLXt211vYxGegS8RHsJJQxdFd2Zl",
+ "stats": {
+  "personnel_units": 1532500,
+  "tanks": 12388,
+  "armoured_fighting_vehicles": 25463,
+  "artillery_systems": 50498,
+  "mlrs": 2169,
+  "aa_warfare_systems": 1681,
+  "planes": 443,
+  "helicopters": 356,
+  "vehicles_fuel_tanks": 155031,
+  "warships_cutters": 35,
+  "cruise_missiles": 5118,
+  "uav_systems": 538702,
+  "special_military_equip": 4765,
+  "atgm_srbm_systems": 2780,
+  "submarines": 2
+ },
+ "increase": {
+  "personnel_units": 1440,
+  "tanks": 3,
+  "armoured_fighting_vehicles": 13,
+  "artillery_systems": 21,
+  "mlrs": 4,
+  "aa_warfare_systems": 2,
+  "planes": 0,
+  "helicopters": 0,
+  "vehicles_fuel_tanks": 296,
+  "warships_cutters": 0,
+  "cruise_missiles": 0,
+  "uav_systems": 1474,
+  "special_military_equip": 2,
+  "atgm_srbm_systems": 6,
+  "submarines": 0
+ },
+ "fetched_at": "2026-09-29T22:41:50+00:00",
+ "source": "General Staff of the Armed Forces of Ukraine via russianwarship.rip"
+}

@@ -1,0 +1,89 @@
+{
+ "_comment": "Credits for every photo/video used on the site. All from Wikimedia Commons under free licences. Keep in sync with assets/media/.",
+ "items": [
+  {
+   "file": "hero.webp",
+   "title": "Drone group 22nd ombr",
+   "author": "General Staff of the Armed Forces of Ukraine (photo: 22nd Mechanized Brigade)",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:Drone_group_22nd_ombr.jpg"
+  },
+  {
+   "file": "himars.webp",
+   "title": "Ukrainian HIMARS in Zaporizhya oblast, early June 2022 (2)",
+   "author": "General Staff of the Armed Forces of Ukraine",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:Ukrainian_HIMARS_in_Zaporizhya_oblast,_early_June_2022_(2).jpg"
+  },
+  {
+   "file": "sunflowers.webp",
+   "title": "Cumulonimbus storm clouds over sunflower field Ukraine",
+   "author": "Domalchuk",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:Cumulonimbus_storm_clouds_over_sunflower_field_Ukraine.jpg"
+  },
+  {
+   "file": "launch.webp",
+   "title": "Drone launch 92nd oshbr",
+   "author": "General Staff of the Armed Forces of Ukraine (photo: 92nd Assault Brigade)",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:Drone_launch_92nd_oshbr.jpg"
+  },
+  {
+   "file": "sting.webp",
+   "title": "Sting launch 114th tobr",
+   "author": "General Staff of the Armed Forces of Ukraine (photo: 114th Territorial Defence Brigade)",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:Sting_launch_114th_tobr.jpg"
+  },
+  {
+   "file": "sunset.webp",
+   "title": "Sunset uav 22th ombr",
+   "author": "General Staff of the Armed Forces of Ukraine (photo: 22nd Mechanized Brigade)",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:Sunset_uav_22th_ombr.jpg"
+  },
+  {
+   "file": "flag.mp4 / flag.webm",
+   "title": "Наш прапор (video, re-encoded to 1280px, muted)",
+   "author": "Anastasiia Chu",
+   "license": "CC BY-SA 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:%D0%9D%D0%B0%D1%88_%D0%BF%D1%80%D0%B0%D0%BF%D0%BE%D1%80.webm"
+  },
+  {
+   "file": "hero-video (montage)",
+   "title": "Artillery operations 26th oabr",
+   "author": "26th Artillery Brigade of the Armed Forces of Ukraine",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:Artillery_operations_26th_oabr.webm"
+  },
+  {
+   "file": "hero-video (montage)",
+   "title": "JMTG-U Ukrainian BM-21 Rocket Launcher B-Roll",
+   "author": "U.S. Army (Kayla Christopher)",
+   "license": "Public domain",
+   "url": "https://commons.wikimedia.org/wiki/File:JMTG-U_Ukrainian_BM-21_Rocket_Launcher_B-Roll.ogv"
+  },
+  {
+   "file": "hero-video (montage)",
+   "title": "Vilkha test 2019",
+   "author": "Суспільне Око",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:Vilkha_test_2019.webm"
+  },
+  {
+   "file": "hero-video (montage)",
+   "title": "Ukrainian gepard spaa",
+   "author": "Air Command West, Ukrainian Air Force",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:Ukrainian_gepard_spaa.webm"
+  },
+  {
+   "file": "hero-video (montage)",
+   "title": "GUR footage of 1 February 2024 attack on Ivanovets by Group 13",
+   "author": "Main Directorate of Intelligence (HUR) of the Ministry of Defence of Ukraine",
+   "license": "CC BY 4.0",
+   "url": "https://commons.wikimedia.org/wiki/File:GUR_footage_of_1_February_2024_attack_on_Ivanovets_by_Group_13.webm"
+  }
+ ]
+}

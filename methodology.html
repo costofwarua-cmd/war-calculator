@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0c0e">
+  <title>Методологія — Ціна війни</title>
+  <meta name="description" content="Звідки беруться цифри на сайті «Ціна війни» і як ми їх рахуємо. / Sources and methodology of Cost of War.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='3' height='1' fill='%230057b8'/%3E%3Crect y='1' width='3' height='1' fill='%23ffd500'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <style>[data-l]{display:none}html[lang="uk"] [data-l="uk"],html[lang="en"] [data-l="en"]{display:block}</style>
+</head>
+<body data-page="method">
+  <main>
+
+  <article class="prose" data-l="uk">
+    <h1>Методологія</h1>
+    <p>Мета сайту — показати ціну війни в цифрах, які можна перевірити. Кожне число має джерело. Там, де ми самі щось оцінюємо, стоїть знак ≈ і показано діапазон.</p>
+
+    <h2>1. Втрати росії та їхня вартість</h2>
+    <p><strong>Кількість.</strong> Щоденні зведення Генерального штабу ЗСУ, які ми отримуємо через відкрите API <a href="https://russianwarship.rip/">russianwarship.rip</a>. Сайт перевіряє свіжі дані щодня (GitHub Actions) і відкидає оновлення, якщо якийсь показник зменшився або добовий приріст неправдоподібно великий.</p>
+    <p><strong>Це заявлені, а не візуально підтверджені втрати.</strong> Незалежний проєкт <a href="https://www.oryxspioenkop.com/">Oryx</a> рахує лише техніку, підтверджену фото чи відео, тому його цифри нижчі. Ми показуємо дані Генштабу як офіційне джерело і прямо про це кажемо.</p>
+    <p><strong>Вартість.</strong> Кількість у кожній категорії множимо на орієнтовну вартість однієї одиниці (нижня, середня та верхня оцінки). На головній сторінці — середня оцінка, а діапазон показано під нею. Вартість одиниці ми визначили на основі публічних оцінок, зокрема <a href="https://forbes.ua/inside/skilki-koshtuvala-rosii-znishchena-v-ukraini-tekhnika-za-pivroku-viyni-otsinka-forbes-24082022-7884">Forbes Україна</a>. Категорії неоднорідні: «танк» — це і Т-62 1960-х, і Т-90М, тож похибка велика.</p>
+    <table>
+      <thead><tr><th>Категорія</th><th>Нижня</th><th>Середня</th><th>Верхня</th></tr></thead>
+      <tbody class="cost-rows"></tbody>
+    </table>
+    <p><strong>Людські втрати ми свідомо не переводимо в гроші.</strong> Категорію «ОТРК/ТРК» теж не оцінюємо: її склад у джерелі неоднозначний.</p>
+
+    <h2>2. Збитки Україні</h2>
+    <p><a href="https://www.worldbank.org/en/news/press-release/2026/02/23/updated-ukraine-recovery-and-reconstruction-needs-assessment-released">П'ята швидка оцінка збитків і потреб (RDNA5)</a> від Світового банку, уряду України, Європейської комісії та ООН, опублікована 23 лютого 2026 року. Вона охоплює період з 24 лютого 2022 до 31 грудня 2025 року. <em>Збитки</em> — це вартість зруйнованого майна. <em>Потреби</em> — це кошти на відновлення за 10 років: у них закладено відбудову за кращими стандартами та економічні втрати.</p>
+    <p>Цивільні жертви взято зі <a href="https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-August-2026">щомісячних звітів Моніторингової місії ООН з прав людини</a>. Це лише верифіковані випадки. Реальні цифри значно вищі: зокрема, повних даних з Маріуполя та інших окупованих територій немає.</p>
+
+    <h2>3. Військові витрати</h2>
+    <p><a href="https://www.sipri.org/databases/milex">База даних SIPRI про військові витрати</a>, видання квітня 2026 року, у поточних доларах США. Це всі військові витрати держави, а не лише витрати на війну. Дані по росії SIPRI оцінює сам, бо росія засекречує дедалі більшу частину оборонного бюджету (близько 79% розділу «Національна оборона» у 2025 році). Показник «щосекунди» — це річна сума за 2025 рік, поділена на кількість секунд у році.</p>
+
+    <h2>4. Допомога партнерів</h2>
+    <p><a href="https://www.kielinstitut.de/topics/war-against-ukraine/ukraine-support-tracker">Ukraine Support Tracker</a> Кільського інституту світової економіки, дані до 30 червня 2026 року. Ми показуємо <em>розподілену</em> допомогу (allocations): кошти й техніку, які вже доставлено або конкретно призначено. Обіцянки (commitments) винесено в окрему колонку таблиці. Інституції ЄС (Єврокомісія та Рада) показано окремим донором. Колонка «Разом із часткою в ЄС» додає до допомоги країни її частку в програмах ЄС. Частку ВВП рахуємо від ВВП донора за 2021 рік, як і Kiel.</p>
+
+    <h2>5. Особистий внесок</h2>
+    <p>Ціни товарів орієнтовні: ми задаємо їх у доларах і перераховуємо за офіційним курсом НБУ, який оновлюється щодня. Реальна вартість залежить від моделі та постачальника, тому актуальні ціни й збори публікують самі фонди. Сайт не приймає гроші: кнопки ведуть напряму на сторінки фондів.</p>
+
+    <h2>Фото та відео</h2>
+    <p>Усі зображення взято з Wikimedia Commons під вільними ліцензіями. Фото Генерального штабу ЗСУ поширюються за ліцензією CC BY 4.0. Відео ми перекодували (зменшили розмір і прибрали звук).</p>
+    <ul class="credits"></ul>
+
+    <h2>Оновлення</h2>
+    <p>Втрати росії та курс валют оновлюються щодня автоматично. Решту наборів даних (RDNA, SIPRI, Kiel, ООН) ми оновлюємо вручну, коли джерело публікує новий випуск. Дата кожного набору вказана біля нього на головній сторінці.</p>
+    <p>Знайшли помилку? Напишіть нам — ми виправимо і зазначимо це тут.</p>
+  </article>
+
+  <article class="prose" data-l="en">
+    <h1>Methodology</h1>
+    <p>The goal is to show what the war costs, using numbers anyone can check. Every figure has a source. Wherever we make our own estimate, it is marked ≈ and shown as a range.</p>
+
+    <h2>1. russia's losses and their value</h2>
+    <p><strong>Counts.</strong> Daily reports of the General Staff of the Armed Forces of Ukraine, taken from the open <a href="https://russianwarship.rip/">russianwarship.rip</a> API. A daily job (GitHub Actions) refreshes the data and rejects any update in which a figure decreases or a daily increase is implausibly large.</p>
+    <p><strong>These are claimed, not visually confirmed, losses.</strong> The independent <a href="https://www.oryxspioenkop.com/">Oryx</a> project counts only equipment confirmed by photo or video, so its numbers are lower. We use the General Staff as the official source and say so plainly.</p>
+    <p><strong>Value.</strong> We multiply each category's count by an approximate cost per unit, with low, mid and high estimates. The home page shows the mid estimate, with the range beneath it. Unit costs are based on public estimates, including <a href="https://forbes.ua/inside/skilki-koshtuvala-rosii-znishchena-v-ukraini-tekhnika-za-pivroku-viyni-otsinka-forbes-24082022-7884">Forbes Ukraine</a>. Categories are mixed: a "tank" can be a 1960s T-62 or a T-90M, so the uncertainty is large.</p>
+    <table>
+      <thead><tr><th>Category</th><th>Low</th><th>Mid</th><th>High</th></tr></thead>
+      <tbody class="cost-rows"></tbody>
+    </table>
+    <p><strong>We deliberately do not put a price on human lives.</strong> We also leave the "tactical missile systems" category unvalued, because the source does not define it clearly.</p>
+
+    <h2>2. Damage to Ukraine</h2>
+    <p>The <a href="https://www.worldbank.org/en/news/press-release/2026/02/23/updated-ukraine-recovery-and-reconstruction-needs-assessment-released">Fifth Rapid Damage and Needs Assessment (RDNA5)</a> by the World Bank, the Government of Ukraine, the European Commission and the UN, published on 23 February 2026. It covers 24 February 2022 to 31 December 2025. <em>Damage</em> is the value of destroyed physical assets. <em>Needs</em> is the cost of recovery over 10 years, including building back better and economic losses.</p>
+    <p>Civilian casualties come from the <a href="https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-August-2026">monthly updates of the UN Human Rights Monitoring Mission in Ukraine</a>. These are verified cases only. Actual numbers are considerably higher; for example, there is no full data from Mariupol and other occupied areas.</p>
+
+    <h2>3. Military spending</h2>
+    <p>The <a href="https://www.sipri.org/databases/milex">SIPRI Military Expenditure Database</a>, April 2026 edition, in current US dollars. The figures cover a state's entire military budget, not only the war. russia's figures are SIPRI estimates, because russia classifies a growing share of its defence budget (about 79% of "National Defence" in 2025). "Every second" is the 2025 annual total divided by the number of seconds in a year.</p>
+
+    <h2>4. Support from partners</h2>
+    <p>The Kiel Institute's <a href="https://www.kielinstitut.de/topics/war-against-ukraine/ukraine-support-tracker">Ukraine Support Tracker</a>, with data to 30 June 2026. We show <em>allocations</em>: aid that has been delivered or specifically earmarked. Pledges (commitments) are in a separate table column. EU institutions (the Commission and the Council) are listed as a donor of their own. The "Total incl. EU share" column adds each country's share of EU programmes to its own aid. Share of GDP uses the donor's 2021 GDP, as Kiel does.</p>
+
+    <h2>5. Personal contribution</h2>
+    <p>Item prices are approximate. We set them in US dollars and convert them at the official National Bank of Ukraine rate, which updates daily. Real prices depend on the model and the supplier, so the funds publish current prices and campaigns themselves. The site takes no money: the buttons link straight to the funds.</p>
+
+    <h2>Photos and video</h2>
+    <p>All images come from Wikimedia Commons under free licences. Photos by the General Staff of the Armed Forces of Ukraine are licensed CC BY 4.0. We re-encoded the video (smaller size, audio removed).</p>
+    <ul class="credits"></ul>
+
+    <h2>Updates</h2>
+    <p>russia's losses and exchange rates update automatically every day. The other datasets (RDNA, SIPRI, Kiel, UN) are updated by hand when their sources publish a new release. Each dataset's date is shown next to it on the home page.</p>
+    <p>Spotted a mistake? Tell us — we will fix it and note the correction here.</p>
+  </article>
+  </main>
+
+  <div class="tip" id="tip" role="tooltip"></div>
+  <script src="assets/i18n.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    (function () {
+      fetch("data/media.json").then(function (r) { return r.json(); }).then(function (m) {
+        var esc = function (x) { return String(x).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+        var html = m.items.map(function (i) {
+          return '<li><a href="' + esc(i.url) + '" target="_blank" rel="noopener">' + esc(i.title) + "</a> — " + esc(i.author) + ", " + esc(i.license) + "</li>";
+        }).join("");
+        document.querySelectorAll(".credits").forEach(function (ul) { ul.innerHTML = html; });
+      });
+      fetch("data/static.json").then(function (r) { return r.json(); }).then(function (s) {
+        var items = s.unit_costs.items;
+        document.querySelectorAll("article").forEach(function (art) {
+          var l = art.getAttribute("data-l"), dict = I18N[l];
+          var f = function (v) { return "$" + new Intl.NumberFormat(l === "uk" ? "uk-UA" : "en-US").format(v); };
+          art.querySelector(".cost-rows").innerHTML = Object.keys(items).map(function (k) {
+            var c = items[k];
+            return "<tr><td>" + dict["cat." + k] + "</td><td>" + f(c.low) + "</td><td>" + f(c.mid) + "</td><td>" + f(c.high) + "</td></tr>";
+          }).join("");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

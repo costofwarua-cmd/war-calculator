@@ -1,0 +1,84 @@
+{
+  "_comment": "Hand-curated datasets. Every block has source + url + as_of. Update manually when the source publishes a new release; see README.",
+
+  "unit_costs": {
+    "_note": "Site's own rough per-unit replacement-cost estimates in USD (low / mid / high). Based on public estimates (Forbes Ukraine valuations, open-source price references). Personnel are deliberately NOT monetised.",
+    "as_of": "2026-09-30",
+    "sources": [
+      {"name": "Forbes Україна — оцінки вартості знищеної техніки рф", "url": "https://forbes.ua/inside/skilki-koshtuvala-rosii-znishchena-v-ukraini-tekhnika-za-pivroku-viyni-otsinka-forbes-24082022-7884"},
+      {"name": "Kiel Institute — Price List, Weapons & Items (Ukraine Support Tracker data)", "url": "https://www.kielinstitut.de/publications/ukraine-support-tracker-data-6453/"}
+    ],
+    "items": {
+      "tanks":                    {"low": 1000000,  "mid": 2500000,  "high": 4500000},
+      "armoured_fighting_vehicles":{"low": 300000,  "mid": 800000,   "high": 1500000},
+      "artillery_systems":        {"low": 300000,   "mid": 800000,   "high": 2000000},
+      "mlrs":                     {"low": 1000000,  "mid": 2500000,  "high": 5000000},
+      "aa_warfare_systems":       {"low": 5000000,  "mid": 10000000, "high": 20000000},
+      "planes":                   {"low": 15000000, "mid": 30000000, "high": 50000000},
+      "helicopters":              {"low": 8000000,  "mid": 12000000, "high": 20000000},
+      "vehicles_fuel_tanks":      {"low": 30000,    "mid": 60000,    "high": 100000},
+      "warships_cutters":         {"low": 5000000,  "mid": 60000000, "high": 150000000},
+      "submarines":               {"low": 200000000,"mid": 300000000,"high": 400000000},
+      "cruise_missiles":          {"low": 1000000,  "mid": 3000000,  "high": 6500000},
+      "uav_systems":              {"low": 5000,     "mid": 25000,    "high": 80000},
+      "special_military_equip":   {"low": 300000,   "mid": 1000000,  "high": 3000000}
+    },
+    "excluded": ["personnel_units", "atgm_srbm_systems"]
+  },
+
+  "ukraine_damage": {
+    "source": "World Bank, Government of Ukraine, European Commission, United Nations — Fifth Rapid Damage and Needs Assessment (RDNA5)",
+    "url": "https://www.worldbank.org/en/news/press-release/2026/02/23/updated-ukraine-recovery-and-reconstruction-needs-assessment-released",
+    "period": "2022-02-24 — 2025-12-31",
+    "published": "2026-02-23",
+    "damage_usd_bn": 195.1,
+    "needs_usd_bn": 588,
+    "needs_vs_gdp": "≈3× nominal GDP of Ukraine in 2025",
+    "housing_damaged_share": 0.14,
+    "households_affected_mln": 3,
+    "damage_share_by_sector": {"housing": 0.31, "transport": 0.206, "energy": 0.12, "industry": 0.09, "agriculture": 0.06},
+    "needs_by_sector_usd_bn": {"transport": 96, "energy": 91, "housing": 90, "industry": 63, "agriculture": 55, "demining": 28}
+  },
+
+  "civilians": {
+    "source": "UN Human Rights Monitoring Mission in Ukraine (OHCHR) — Protection of Civilians in Armed Conflict, August 2026 update",
+    "url": "https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-August-2026",
+    "as_of": "2026-08-31",
+    "killed": 17257,
+    "injured": 53693,
+    "note": "Verified cases only; the UN states actual numbers are likely considerably higher."
+  },
+
+  "military_spending": {
+    "source": "SIPRI Military Expenditure Database (April 2026 edition)",
+    "url": "https://www.sipri.org/databases/milex",
+    "unit": "USD billion, current prices",
+    "note": "Total military expenditure of each state (not only the war), per SIPRI definition. Russia figures are SIPRI estimates.",
+    "years":   [2021, 2022, 2023, 2024, 2025],
+    "russia":  [65.9, 104.4, 109.2, 149.4, 190.4],
+    "ukraine": [6.8, 41.5, 65.3, 64.8, 84.1],
+    "russia_pct_gdp":  [3.6, 4.6, 5.3, 6.9, 7.5],
+    "ukraine_pct_gdp": [3.4, 25.6, 36.0, 34.0, 39.6],
+    "russia_pct_gov":  [10.3, 13.0, 14.8, 18.6, 19.8],
+    "ukraine_pct_gov": [8.5, 39.2, 49.1, 47.6, 62.9]
+  },
+
+  "donate": {
+    "_note": "Approximate prices in USD; converted to UAH at the NBU rate. Prices vary — funds' own pages are authoritative.",
+    "items": [
+      {"id": "tourniquet", "usd": 30},
+      {"id": "ifak", "usd": 100},
+      {"id": "starlink", "usd": 350},
+      {"id": "fpv", "usd": 400},
+      {"id": "trench_ew", "usd": 600},
+      {"id": "thermal", "usd": 1500},
+      {"id": "mavic", "usd": 5500},
+      {"id": "pickup", "usd": 10000}
+    ],
+    "funds": [
+      {"id": "cba", "url": "https://savelife.in.ua/en/donate-en/"},
+      {"id": "prytula", "url": "https://prytulafoundation.org/en"},
+      {"id": "u24", "url": "https://u24.gov.ua/"}
+    ]
+  }
+}

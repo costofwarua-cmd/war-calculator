@@ -1,0 +1,38 @@
+{
+  "_comment": "Active fundraisers shown in the 'Збори' block. Items with \"demo\": true are placeholders — replace them with real, verified fundraisers (title, organiser, goal, raised, link). raised/goal are in 'currency'. Update 'raised' by hand or via a script; 'ends' is optional (YYYY-MM-DD).",
+  "updated": "2026-09-30",
+  "items": [
+    {
+      "id": "demo-fpv",
+      "demo": true,
+      "title": { "uk": "FPV-дрони для підрозділу", "en": "FPV drones for a unit" },
+      "org": { "uk": "Назва фонду або волонтера", "en": "Fund or volunteer name" },
+      "desc": { "uk": "Короткий опис: для кого збір, що саме купуємо і як звітуємо.", "en": "Short description: who it is for, what we buy and how we report." },
+      "goal": 500000, "raised": 342000, "currency": "UAH",
+      "img": "assets/media/launch-sm.webp",
+      "url": "",
+      "ends": "2026-10-31"
+    },
+    {
+      "id": "demo-ew",
+      "demo": true,
+      "title": { "uk": "РЕБ для захисту позицій", "en": "EW jammers to protect positions" },
+      "org": { "uk": "Назва фонду або волонтера", "en": "Fund or volunteer name" },
+      "desc": { "uk": "Короткий опис: для кого збір, що саме купуємо і як звітуємо.", "en": "Short description: who it is for, what we buy and how we report." },
+      "goal": 300000, "raised": 118500, "currency": "UAH",
+      "img": "assets/media/sting-sm.webp",
+      "url": "",
+      "ends": "2026-11-15"
+    },
+    {
+      "id": "demo-med",
+      "demo": true,
+      "title": { "uk": "Аптечки й турнікети", "en": "First-aid kits and tourniquets" },
+      "org": { "uk": "Назва фонду або волонтера", "en": "Fund or volunteer name" },
+      "desc": { "uk": "Короткий опис: для кого збір, що саме купуємо і як звітуємо.", "en": "Short description: who it is for, what we buy and how we report." },
+      "goal": 150000, "raised": 139000, "currency": "UAH",
+      "img": "assets/media/sunset-sm.webp",
+      "url": ""
+    }
+  ]
+}
