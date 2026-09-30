@@ -48,7 +48,8 @@
 ## Далі (записано 2026-09-30)
 ### Від тебе
 - [x] Домен costofwarukraine.com куплено (Cloudflare, автопродовження 31.08.2027) і підключено, HTTPS увімкнено
-- [ ] Створити ресурс GA4 на costofwar.ua@gmail.com і надіслати ID `G-XXXXXXX` → я вбудую аналітику з банером згоди, потім Google Ads
+- [x] GA4 `G-9LBY5LGE8E` підключено (Consent Mode v2 + банер згоди, події: donate_click, share_image_download, share_click, section_view, chapter_jump, time_machine_play, wall_category, wall_toggle, globe_country, calculator_amount, contact_click, add_fundraiser_click, language_switch)
+- [ ] Google Ads: створити акаунт на costofwar.ua@gmail.com, зв'язати з GA4, перша кампанія
 - [ ] Надіслати справжні email і Telegram для «Співпраці» та перші справжні збори
 
 ### Доопрацювання сайту

@@ -11,6 +11,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
+  <!-- Google Analytics 4 with Consent Mode v2: nothing is stored until the visitor agrees. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied",
+      analytics_storage: "denied", functionality_storage: "granted", security_storage: "granted", wait_for_update: 500 });
+    try { if (localStorage.getItem("consent") === "granted") gtag("consent", "update", { analytics_storage: "granted" }); } catch (e) {}
+    gtag("js", new Date());
+    gtag("config", "G-9LBY5LGE8E", { anonymize_ip: true });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9LBY5LGE8E"></script>
   <script>document.documentElement.classList.add("js");</script>
   <style>[data-l]{display:none}html[lang="uk"] [data-l="uk"],html[lang="en"] [data-l="en"]{display:block}</style>
 </head>
@@ -48,6 +59,9 @@
     <p>Усі зображення взято з Wikimedia Commons під вільними ліцензіями. Фото Генерального штабу ЗСУ поширюються за ліцензією CC BY 4.0. Відео ми перекодували (зменшили розмір і прибрали звук).</p>
     <ul class="credits"></ul>
 
+    <h2 id="privacy">Конфіденційність і cookies</h2>
+    <p>Сайт не збирає імен, пошт чи платіжних даних: донати відбуваються на сайтах фондів. Щоб розуміти, які розділи корисні, ми використовуємо Google Analytics 4 — лише якщо ви погодились у банері. До згоди аналітика не зберігає cookies (Google Consent Mode v2), IP-адреси анонімізуються. Вибір можна змінити будь-коли за посиланням «Налаштування cookies» внизу сторінки. Питання — через розділ «Співпраця».</p>
+
     <h2>Оновлення</h2>
     <p>Втрати росії та курс валют оновлюються щодня автоматично. Решту наборів даних (RDNA, SIPRI, Kiel, ООН) ми оновлюємо вручну, коли джерело публікує новий випуск. Дата кожного набору вказана біля нього на головній сторінці.</p>
     <p>Знайшли помилку? Напишіть нам — ми виправимо і зазначимо це тут.</p>
@@ -83,6 +97,9 @@
     <h2>Photos and video</h2>
     <p>All images come from Wikimedia Commons under free licences. Photos by the General Staff of the Armed Forces of Ukraine are licensed CC BY 4.0. We re-encoded the video (smaller size, audio removed).</p>
     <ul class="credits"></ul>
+
+    <h2 id="privacy-en">Privacy and cookies</h2>
+    <p>The site collects no names, emails or payment details: donations happen on the funds' own websites. To see which sections are useful we use Google Analytics 4 — only if you agree in the banner. Until then analytics stores no cookies (Google Consent Mode v2), and IP addresses are anonymised. You can change your choice at any time via "Cookie settings" at the bottom of the page. Questions — see "Partner with us".</p>
 
     <h2>Updates</h2>
     <p>russia's losses and exchange rates update automatically every day. The other datasets (RDNA, SIPRI, Kiel, UN) are updated by hand when their sources publish a new release. Each dataset's date is shown next to it on the home page.</p>

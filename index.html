@@ -16,6 +16,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
+  <!-- Google Analytics 4 with Consent Mode v2: nothing is stored until the visitor agrees. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied",
+      analytics_storage: "denied", functionality_storage: "granted", security_storage: "granted", wait_for_update: 500 });
+    try { if (localStorage.getItem("consent") === "granted") gtag("consent", "update", { analytics_storage: "granted" }); } catch (e) {}
+    gtag("js", new Date());
+    gtag("config", "G-9LBY5LGE8E", { anonymize_ip: true });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9LBY5LGE8E"></script>
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body data-page="home">

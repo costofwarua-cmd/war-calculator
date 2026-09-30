@@ -33,6 +33,58 @@
     set(k, v) { try { localStorage.setItem(k, v); } catch { /* ignore */ } },
   };
 
+  /* ---------- analytics: consent banner + events ---------- */
+  const track = (name, params = {}) => { try { window.gtag && window.gtag("event", name, params); } catch { /* ignore */ } };
+  function initConsent() {
+    const saved = store.get("consent");
+    const show = () => {
+      if ($("#consent")) return;
+      document.body.insertAdjacentHTML("beforeend", `
+        <div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="${esc(t("ck.title"))}">
+          <p><b>${esc(t("ck.title"))}</b> ${esc(t("ck.text"))} <a href="methodology.html#privacy">${esc(t("ck.more"))}</a></p>
+          <div class="consent-btns">
+            <button class="cta" type="button" data-c="granted">${esc(t("ck.accept"))}</button>
+            <button class="btn-ghost" type="button" data-c="denied">${esc(t("ck.deny"))}</button>
+          </div>
+        </div>`);
+      requestAnimationFrame(() => $("#consent").classList.add("on"));
+      $("#consent").addEventListener("click", e => {
+        const b = e.target.closest("button[data-c]"); if (!b) return;
+        const v = b.dataset.c;
+        store.set("consent", v);
+        if (window.gtag) gtag("consent", "update", { analytics_storage: v });
+        track("consent_choice", { choice: v });
+        $("#consent").classList.remove("on");
+        setTimeout(() => $("#consent") && $("#consent").remove(), 400);
+      });
+    };
+    if (saved !== "granted" && saved !== "denied") setTimeout(show, 2500);
+    document.addEventListener("click", e => { if (e.target.closest("[data-consent-open]")) { e.preventDefault(); show(); } });
+  }
+  // Clicks worth measuring, via delegation so dynamic content is covered too.
+  function initTracking() {
+    document.addEventListener("click", e => {
+      const a = e.target.closest("a, button"); if (!a) return;
+      if (a.closest("#co-funds") || a.closest(".fr-card")) {
+        const card = a.closest(".fr-card");
+        track("donate_click", { destination: a.href || "", fundraiser: card ? card.querySelector("h3").textContent : "", fund: a.textContent.trim() });
+      } else if (a.id === "co-download") track("share_image_download", { tier: state.shareTier, item: state.shareBest ? state.shareBest.id : "none" });
+      else if (a.id === "co-share") track("share_click", { tier: state.shareTier, item: state.shareBest ? state.shareBest.id : "none" });
+      else if (a.id === "tm-play") track("time_machine_play");
+      else if (a.closest("#wall-chips")) track("wall_category", { category: a.dataset.k });
+      else if (a.closest("#globe-list")) track("globe_country", { country: a.dataset.c });
+      else if (a.id === "lang-btn") track("language_switch", { to: state.lang === "uk" ? "en" : "uk" });
+      else if (a.closest("#ct-actions")) track("contact_click", { channel: a.id === "ct-tg" ? "telegram" : "email" });
+      else if (a.classList.contains("fr-add")) track("add_fundraiser_click");
+    });
+    // Which chapters people actually reach.
+    const seen = new Set();
+    const io = new IntersectionObserver(entries => entries.forEach(en => {
+      if (en.isIntersecting && !seen.has(en.target.id)) { seen.add(en.target.id); track("section_view", { section: en.target.id }); }
+    }), { threshold: .35 });
+    PAGES.forEach(([id]) => { const el = document.getElementById(id); if (el) io.observe(el); });
+  }
+
   /* ---------- shared layout: header, mobile menu, footer ---------- */
   function initLayout() {
     const links = PAGES.map(([p, key]) => `<a href="${href(p)}" data-i18n="${key}"></a>`).join("");
@@ -60,6 +112,7 @@
           <p data-i18n="foot.note"></p>
           <p data-i18n="foot.updated"></p>
           <p data-i18n="foot.credits"></p>
+          <p><a href="#" data-consent-open data-i18n="ck.settings"></a> · <a href="methodology.html#privacy" data-i18n="ck.policy"></a></p>
         </div>
       </footer>`);
     const btn = $("#menu-btn"), menu = $("#mnav");
@@ -259,6 +312,7 @@
       const id = a.getAttribute("href").slice(1), sec = id && document.getElementById(id);
       if (!sec || !CHAPTER[id]) return;
       e.preventDefault();
+      track("chapter_jump", { section: id });
       history.replaceState(null, "", "#" + id);
       if (REDUCED || $("#pintro")) { sec.scrollIntoView(); return; }
       const media = sec.querySelector(".media");
@@ -754,7 +808,7 @@
   }
   function initWall() {
     if (!$("#wall")) return;
-    $("#wall").addEventListener("click", () => state.wall && state.wall.toggle());
+    $("#wall").addEventListener("click", () => { if (state.wall) { state.wall.toggle(); track("wall_toggle", { category: state.wallKind }); } });
     $("#wall-chips").addEventListener("click", e => {
       const b = e.target.closest("button[data-k]"); if (!b) return;
       state.wallKind = b.dataset.k; renderWall(true);
@@ -1001,6 +1055,9 @@
     state.shareWhat = best ? `${fmtInt(best.q)} × ${t("item." + best.id)}` : t("item.tourniquet");
     state.shareAmount = SYM[cur] + fmtInt(amount);
     state.shareUah = uah;
+    state.shareTier = tierOf(uah) + 1;
+    clearTimeout(state.calcTrack);
+    state.calcTrack = setTimeout(() => track("calculator_amount", { tier: state.shareTier, item: best ? best.id : "none" }), 2000);
     scheduleShareCard();
   }
 
@@ -1180,7 +1237,7 @@
   }
 
   async function main() {
-    initLayout(); initLang(); applyI18n(); initTip(); initScrollFx(); initControls(); initContribute(); initTimeMachine(); initWall(); initSpendTicker(); initMotion(); initChapterJumps();
+    initLayout(); initLang(); initConsent(); initTracking(); applyI18n(); initTip(); initScrollFx(); initControls(); initContribute(); initTimeMachine(); initWall(); initSpendTicker(); initMotion(); initChapterJumps();
     if (window.FX && $("#sky")) FX.sky($("#sky"));
     state.heroReady = (PAGE === "home" ? playIntro() : playPageIntro()).then(() => {
       state.introDone = true;
