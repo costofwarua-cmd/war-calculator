@@ -1,8 +1,8 @@
 {
- "date": "29.10.2026",
- "USD": 45.5923,
- "EUR": 50.7666,
+ "date": "30.10.2026",
+ "USD": 45.5293,
+ "EUR": 50.6796,
  "source": "National Bank of Ukraine",
  "url": "https://bank.gov.ua/en/markets/exchangerates",
- "fetched_at": "2026-10-29T08:20:43+00:00"
+ "fetched_at": "2026-10-29T14:20:18+00:00"
 }
