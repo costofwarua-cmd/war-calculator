@@ -1,8 +1,8 @@
 {
- "date": "17.11.2026",
- "USD": 45.3918,
- "EUR": 49.9881,
+ "date": "18.11.2026",
+ "USD": 45.3436,
+ "EUR": 49.8561,
  "source": "National Bank of Ukraine",
  "url": "https://bank.gov.ua/en/markets/exchangerates",
- "fetched_at": "2026-11-16T22:57:05+00:00"
+ "fetched_at": "2026-11-17T16:59:39+00:00"
 }
